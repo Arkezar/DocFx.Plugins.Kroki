@@ -5,6 +5,9 @@ namespace DocFx.Plugins.Kroki
 {
   public class KrokiSettings
   {
+    private const OutputFormat _defaultOutputFormat = OutputFormat.SVG;
+    private const string _defaultServiceUrl = "https://kroki.io/";
+
     public OutputFormat OutputFormat
     {
       get;
@@ -17,8 +20,8 @@ namespace DocFx.Plugins.Kroki
 
     public KrokiSettings(IReadOnlyDictionary<string, object> parameters)
     {
-      OutputFormat = parameters.GetOutputFormat(OutputFormat.SVG);
-      ServiceUrl = parameters.GetServiceUrl();
+      OutputFormat = parameters.GetOutputFormatOrDefault(_defaultOutputFormat);
+      ServiceUrl = parameters.GetServiceUrlOrDefault(_defaultServiceUrl);
     }
   }
 }
