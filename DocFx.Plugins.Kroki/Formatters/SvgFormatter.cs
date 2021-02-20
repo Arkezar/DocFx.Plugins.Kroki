@@ -1,26 +1,13 @@
 ﻿using Microsoft.DocAsCode.MarkdownLite;
-using System.Text;
 
-namespace DocFx.Plugins.Kroki
+namespace DocFx.Plugins.Kroki.Formatters
 {
-  public class SvgFormatter
+  public class SvgFormatter : KrokiFormatter
   {
-    private const string _outputFormat = "<div class=\"{0}{1}\">{2}</div>";
+    protected override string OutputFormat
+      => "<div class='{0}{1}'>{2}</div>";
 
-    private readonly Options _options;
-    private readonly DiagramType _diagramType;
-
-    public SvgFormatter(Options options, DiagramType diagramType)
-    {
-      _options = options;
-      _diagramType = diagramType;
-    }
-
-    public StringBuffer FormatOutput(byte[] data)
-    {
-      string svg = Encoding.UTF8.GetString(data);
-
-      return string.Format(_outputFormat, _options.LangPrefix, _diagramType, svg);
-    }
+    public SvgFormatter(Options options, DiagramType diagramType) : base(options, diagramType)
+    { }
   }
 }
