@@ -1,4 +1,5 @@
-﻿using Microsoft.DocAsCode.Dfm;
+﻿using DocFx.Plugins.Kroki.Formatters;
+using Microsoft.DocAsCode.Dfm;
 using Microsoft.DocAsCode.MarkdownLite;
 using System;
 
@@ -6,15 +7,12 @@ namespace DocFx.Plugins.Kroki
 {
   public abstract class KrokiRenderer : DfmCustomizedRendererPartBase<IMarkdownRenderer, MarkdownCodeBlockToken, MarkdownBlockContext>
   {
-    protected readonly KrokiSettings _settings;
+    private readonly KrokiSettings _settings;
 
     public abstract DiagramType DiagramType
     {
       get;
     }
-
-    public Uri RequestUrl
-      => new Uri(_settings.ServiceUrl, DiagramType.ToString().ToLower());
 
     public KrokiRenderer(KrokiSettings settings)
     {
@@ -28,10 +26,29 @@ namespace DocFx.Plugins.Kroki
 
     public sealed override StringBuffer Render(IMarkdownRenderer renderer, MarkdownCodeBlockToken token, MarkdownBlockContext context)
     {
-      var formatter = new SvgFormatter(renderer.Options, DiagramType);
-      var client = new KrokiClient(RequestUrl);
-      var byteData = client.Get(token.Code, _settings.OutputFormat).Result;
-      return formatter.FormatOutput(byteData);
+      var formatter = GetFormatter(_settings.OutputFormat, renderer.Options, DiagramType);
+      var client = new KrokiClient(_settings.ServiceUrl);
+      var byteData = client.GetDiagram(new KrokiPayload(token.Code, DiagramType, _settings.OutputFormat)).Result;
+      return formatter.FormatDiagramData(byteData);
+    }
+
+    private KrokiFormatter GetFormatter(OutputFormat outputFormat, Options options, DiagramType diagramType)
+    {
+      switch (outputFormat)
+      {
+        case OutputFormat.Base64:
+          return new Base64Formatter(options, diagramType);
+        case OutputFormat.JPEG:
+          throw new NotImplementedException();
+        case OutputFormat.PDF:
+          throw new NotImplementedException();
+        case OutputFormat.PNG:
+          throw new NotImplementedException();
+        case OutputFormat.SVG:
+          return new SvgFormatter(options, diagramType);
+        default:
+          throw new NotSupportedException();
+      }
     }
   }
 }

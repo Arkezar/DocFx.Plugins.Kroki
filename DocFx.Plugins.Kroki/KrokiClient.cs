@@ -1,6 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Net.Http;
-using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace DocFx.Plugins.Kroki
@@ -14,27 +15,20 @@ namespace DocFx.Plugins.Kroki
       _requestUrl = requestUrl;
     }
 
-    public async Task<byte[]> Get(string code, OutputFormat outputFormat)
+    public async Task<byte[]> GetDiagram(KrokiPayload payload)
     {
-      using (var client = GetClient())
+      using (var client = new HttpClient())
       {
-        var content = PrepareRequestContent(code, outputFormat);
+        var content = PrepareRequestContent(payload);
         var response = await client.PostAsync(_requestUrl, content);
         return await response.Content.ReadAsByteArrayAsync();
       }
     }
 
-    private HttpClient GetClient()
+    private HttpContent PrepareRequestContent(KrokiPayload payload)
     {
-      var client = new HttpClient();
-      client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("image/svg+xml"));
-      return client;
-    }
-
-    private HttpContent PrepareRequestContent(string code, OutputFormat outputFormat)
-    {
-      var content = new StringContent(code);
-      content.Headers.ContentType = new MediaTypeHeaderValue("text/plain");
+      var jsonContent = JsonConvert.SerializeObject(payload);
+      var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
       return content;
     }
   }
