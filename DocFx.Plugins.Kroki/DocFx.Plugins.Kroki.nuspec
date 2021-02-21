@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>DocFx.Plugins.Kroki</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>Michał Gawron</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <projectUrl>https://github.com/Arkezar/DocFx.Plugins.Kroki</projectUrl>
+    <releaseNotes></releaseNotes>
+    <description>Plugin for DocFx to allow rendering diagrams with kroki.io service in DFM documents.</description>
+    <copyright>$copyright$</copyright>
+    <tags>docfx plugin kroki</tags>
+  </metadata>
+
+  <files>
+    <file src="bin\Release\netstandard2.0\DocFx.Plugins.Kroki.dll" target="plugins\" />
+  </files>
+</package>
