@@ -1,5 +1,7 @@
 # DocFx.Plugins.Kroki
 
+![](https://ci.appveyor.com/api/projects/status/github/Arkezar/DocFx.Plugins.Kroki?svg=true)
+
 This is a plugin for DocFx to allow rendering diagrams with kroki.io service in DFM documents.
 
 ## Installation
