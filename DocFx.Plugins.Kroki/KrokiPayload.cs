@@ -24,7 +24,7 @@ namespace DocFx.Plugins.Kroki
 
     public KrokiPayload(string source, DiagramType diagramType, OutputFormat outputFormat)
     {
-      DiagramSource = source;
+      DiagramSource = System.Net.WebUtility.HtmlDecode(source);
       DiagramType = diagramType.ToString().ToLower();
       OutputFormat = outputFormat.ToString().ToLower();
     }
