@@ -28,8 +28,7 @@ namespace DocFx.Plugins.Kroki
     {
       var formatter = GetFormatter(_settings.OutputFormat, renderer.Options, DiagramType);
       var client = new KrokiClient(_settings.ServiceUrl);
-      var code = System.Net.WebUtility.HtmlDecode(token.Code);
-      var byteData = client.GetDiagram(new KrokiPayload(code, DiagramType, _settings.OutputFormat)).Result;
+      var byteData = client.GetDiagram(new KrokiPayload(token.Code, DiagramType, _settings.OutputFormat)).Result;
       return formatter.FormatDiagramData(byteData);
     }
 
